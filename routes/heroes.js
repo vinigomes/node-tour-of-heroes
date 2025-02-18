@@ -14,7 +14,17 @@ const heroes = [
 ];
 
 router.get('/', function(req, res, next) {
-  res.send(heroes);
+  const heroName = req.query.name;
+  if (heroName) {
+    const hero = heroes.filter(hero => new RegExp(heroName, 'i').test(hero.name));
+    if (hero.length === 0) { 
+      res.status(404).send('Hero not found');
+    } else {
+      res.send(hero);
+    }
+  } else {
+    res.send(heroes);
+  }
 });
 
 router.get('/:id', function(req, res, next) {
